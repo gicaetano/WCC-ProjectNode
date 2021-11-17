@@ -1,0 +1,1 @@
+// regras de negocio do sistemas de artigos
