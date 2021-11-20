@@ -7,7 +7,7 @@ module.exports = (sequelizeDatabase, Sequelize) => {
         titulo: {
             type: Sequelize.STRING
         },
-        descrição: {
+        descricao: {
             type: Sequelize.STRING
         },
         publicado: {

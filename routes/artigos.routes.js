@@ -22,5 +22,15 @@ module.exports = (app) => {
 
     router.post("/", artigosController.create);
 
+// --------- retorna todos
+    router.get("/", artigosController.findAll);
+    
+    // --------- retorna pelo titulo
+    router.get("/findByTitle", artigosController.findByTitle);
+
+    // --------- retorna pelo id
+    router.get("/findById", artigosController.findById);
+    
+    
     app.use("/artigos", router);
 };

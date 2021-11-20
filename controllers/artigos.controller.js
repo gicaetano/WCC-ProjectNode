@@ -1,5 +1,6 @@
 // regras de negocio do sistemas de artigos
-const database = require("../models/index.js");
+const { response } = require("express");
+const database = require("../models");
 const tabelaArtigos = database.artigos;
 
 //cria novo artigo
@@ -12,8 +13,64 @@ exports.create = (req, res) => {
 
     //Promisses
     tabelaArtigos.create(artigo)
-    .then(() => res.send("Artigo criado com sucesso"))
-    .catch(() => res.status(500).send("Ocorreu um erro ao salvar o artigo"))
+    .then(function () {
+        res.send("Artigo criado com sucesso");
+    })
+    .catch(function (error) {
+      console.log(error);
+      res.status(500).send("Ocorreu um erro ao salvar o artigo");
+    })       
+};
 
-    funcaoFormataArtigo();
+// Retorna todos os artigos
+exports.findAll = (req, res) => {
+    tabelaArtigos.findAll()
+    .then(function (data) {
+        res.send(data);
+    })
+    .catch(function () {
+        res.status(500).send("Ocorreu um erro ao buscar todos os artigos")
+    });
+}
+
+exports.findByTitle = (req, res) => {
+    tabelaArtigos.findOne({where: { titulo: req.query.titulo }})
+    .then(function (data) {
+        if(data) {
+            res.send(data);
+        } else {
+            res
+            .status(404)
+            .send (
+                {message: "Não foi possivel localizar arquivo com o titulo: " + req.query.titulo}
+        );
+        }
+    }).catch(function () {
+        res
+        .status(500)
+        .send({message: "Ocorreu um erro ao buscar o artigo com titulo: " + req.query.titulo}
+        );
+    });
+};
+
+// Retorna por ID 
+
+exports.findById = (req, res) => {
+    tabelaArtigos
+    .findByPk(req.query.id)
+    .then(function (data) {
+        if(data) {
+            res.send(data);
+        } else {
+            res.status(404).send({
+                message:"Não foi possivel encontrar artigo com o id: " + req.query.id
+            });
+        }
+    })
+    .catch(function (error) {
+         res
+         .status(500)
+         .send({message: "Ocorreu um erro ao buscar o artigo com id: " + req.query.id}
+         );
+});
 };
