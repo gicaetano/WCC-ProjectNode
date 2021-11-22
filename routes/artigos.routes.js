@@ -30,7 +30,21 @@ module.exports = (app) => {
 
     // --------- retorna pelo id
     router.get("/findById", artigosController.findById);
+
+    // _________ retorna arquivos publicados ou não
+    router.get("/findAllPubli", artigosController.findAllPubli);
+
+    // _________ Atualiza Arquivos 
+    router.put("/:id", artigosController.update);
+
+    router.put("/", artigosController.updateMany);
+
+    //DELETE
+    router.delete("/", artigosController.deleteAll);
+
+    router.delete("/:id", artigosController.delete);
+
     
-    
+
     app.use("/artigos", router);
 };
